@@ -1,10 +1,11 @@
 <?php
 /*
    Plugin Name: Swifty Press
-   Plugin URI: http://wordpress.org/extend/plugins/swifty-press/
-   Version: 0.1
-   Author: 
+   Plugin URI:  http://zamzam.io
    Description: Mobile app framework for your WordPress blog.
+   Version:     0.1
+   Author:      basememara
+   Author URI:  http://basememara.com
    Text Domain: swifty-press
    License: GPLv3
   */
