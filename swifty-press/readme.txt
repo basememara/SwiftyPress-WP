@@ -1,4 +1,4 @@
-=== Swifty Press ===
+=== SwiftyPress ===
 Contributors: basememara
 Tags: mobile, mobile app, native app, ios, ios app, iphone app, apple, apple watch, wordpress mobile, android, android app, mobile web
 License: GPLv3

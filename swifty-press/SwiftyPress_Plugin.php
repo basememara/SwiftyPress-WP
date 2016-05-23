@@ -35,7 +35,7 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
     }
 
     public function getPluginDisplayName() {
-        return 'Swifty Press';
+        return 'SwiftyPress';
     }
 
     protected function getMainPluginFileName() {

@@ -1,6 +1,6 @@
 <?php
 /*
-   Plugin Name: Swifty Press
+   Plugin Name: SwiftyPress
    Plugin URI:  http://zamzam.io
    Description: Mobile app framework for your WordPress blog.
    Version:     0.1
@@ -40,7 +40,7 @@ $SwiftyPress_minimalRequiredPhpVersion = '5.0';
 function SwiftyPress_noticePhpVersionWrong() {
     global $SwiftyPress_minimalRequiredPhpVersion;
     echo '<div class="updated fade">' .
-      __('Error: plugin "Swifty Press" requires a newer version of PHP to be running.',  'swifty-press').
+      __('Error: plugin "SwiftyPress" requires a newer version of PHP to be running.',  'swifty-press').
             '<br/>' . __('Minimal version of PHP required: ', 'swifty-press') . '<strong>' . $SwiftyPress_minimalRequiredPhpVersion . '</strong>' .
             '<br/>' . __('Your server\'s PHP version: ', 'swifty-press') . '<strong>' . phpversion() . '</strong>' .
          '</div>';

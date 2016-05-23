@@ -281,7 +281,7 @@ class SwiftyPress_OptionsManager {
         $settingsGroup = get_class($this) . '-settings-group';
         ?>
         <div class="wrap">
-            <h2><?php _e('Swifty Press', 'swifty-press'); ?></h2>
+            <h2><?php _e('SwiftyPress', 'swifty-press'); ?></h2>
 
             <table cellspacing="1" cellpadding="2"><tbody>
               <tr><td>Enter the settings below to manage your site's mobile preferences.</td></tr>
