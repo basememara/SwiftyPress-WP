@@ -263,7 +263,7 @@ class SwiftyPress_OptionsManager {
      */
     public function settingsPage() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'swifty-press'));
+            wp_die(__('You do not have sufficient permissions to access this page.', 'swiftypress'));
         }
 
         $optionMetaData = $this->getOptionMetaData();
@@ -281,13 +281,13 @@ class SwiftyPress_OptionsManager {
         $settingsGroup = get_class($this) . '-settings-group';
         ?>
         <div class="wrap">
-            <h2><?php _e('SwiftyPress', 'swifty-press'); ?></h2>
+            <h2><?php _e('SwiftyPress', 'swiftypress'); ?></h2>
 
             <table cellspacing="1" cellpadding="2"><tbody>
               <tr><td>Enter the settings below to manage your site's mobile preferences.</td></tr>
             </tbody></table>
 
-            <h2><?php echo ' '; _e('Settings', 'swifty-press'); ?></h2>
+            <h2><?php echo ' '; _e('Settings', 'swiftypress'); ?></h2>
 
             <form method="post" action="">
             <?php settings_fields($settingsGroup); ?>
@@ -319,7 +319,7 @@ class SwiftyPress_OptionsManager {
                 </tbody></table>
                 <p class="submit">
                     <input type="submit" class="button-primary"
-                           value="<?php _e('Save Changes', 'swifty-press') ?>"/>
+                           value="<?php _e('Save Changes', 'swiftypress') ?>"/>
                 </p>
             </form>
         </div>
@@ -377,22 +377,22 @@ class SwiftyPress_OptionsManager {
     protected function getOptionValueI18nString($optionValue) {
         switch ($optionValue) {
             case 'true':
-                return __('true', 'swifty-press');
+                return __('true', 'swiftypress');
             case 'false':
-                return __('false', 'swifty-press');
+                return __('false', 'swiftypress');
 
             case 'Administrator':
-                return __('Administrator', 'swifty-press');
+                return __('Administrator', 'swiftypress');
             case 'Editor':
-                return __('Editor', 'swifty-press');
+                return __('Editor', 'swiftypress');
             case 'Author':
-                return __('Author', 'swifty-press');
+                return __('Author', 'swiftypress');
             case 'Contributor':
-                return __('Contributor', 'swifty-press');
+                return __('Contributor', 'swiftypress');
             case 'Subscriber':
-                return __('Subscriber', 'swifty-press');
+                return __('Subscriber', 'swiftypress');
             case 'Anyone':
-                return __('Anyone', 'swifty-press');
+                return __('Anyone', 'swiftypress');
         }
         return $optionValue;
     }
@@ -427,3 +427,4 @@ class SwiftyPress_OptionsManager {
         return $sitename;
     }
 }
+

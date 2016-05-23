@@ -13,8 +13,8 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         //  http://plugin.michael-simpson.com/?page_id=31
         return array(
             //'_version' => array('Installed Version'), // Leave this one commented-out. Uncomment to test upgrades.
-            'iOSID' => array(__('Apple iOS ID', 'swifty-press')),
-            'AndroidID' => array(__('Google Android ID', 'swifty-press'))
+            'iOSID' => array(__('Apple iOS ID', 'swiftypress')),
+            'AndroidID' => array(__('Google Android ID', 'swiftypress'))
         );
     }
 
@@ -39,7 +39,7 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
     }
 
     protected function getMainPluginFileName() {
-        return 'swifty-press.php';
+        return 'swiftypress.php';
     }
 
     /**
@@ -177,5 +177,4 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         $extensions = array("comment_count" => wp_count_comments($postdat['ID']));
         return array_merge($postray, $extensions);
     }
-
 }

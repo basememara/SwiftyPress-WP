@@ -14,7 +14,7 @@ Mobile app framework for your WordPress blog.
 Mobile app framework for your WordPress blog.
 
 == Installation ==
-1. Upload swifty-press to the /wp-content/plugins/ directory
+1. Upload swiftypress to the /wp-content/plugins/ directory
 2. Activate the plugin through the \'Plugins\' menu in WordPress
 
 == Frequently Asked Questions ==

@@ -6,7 +6,7 @@
    Version:     0.1
    Author:      basememara
    Author URI:  http://basememara.com
-   Text Domain: swifty-press
+   Text Domain: swiftypress
    License: GPLv3
   */
 
@@ -40,9 +40,9 @@ $SwiftyPress_minimalRequiredPhpVersion = '5.0';
 function SwiftyPress_noticePhpVersionWrong() {
     global $SwiftyPress_minimalRequiredPhpVersion;
     echo '<div class="updated fade">' .
-      __('Error: plugin "SwiftyPress" requires a newer version of PHP to be running.',  'swifty-press').
-            '<br/>' . __('Minimal version of PHP required: ', 'swifty-press') . '<strong>' . $SwiftyPress_minimalRequiredPhpVersion . '</strong>' .
-            '<br/>' . __('Your server\'s PHP version: ', 'swifty-press') . '<strong>' . phpversion() . '</strong>' .
+      __('Error: plugin "SwiftyPress" requires a newer version of PHP to be running.',  'swiftypress').
+            '<br/>' . __('Minimal version of PHP required: ', 'swiftypress') . '<strong>' . $SwiftyPress_minimalRequiredPhpVersion . '</strong>' .
+            '<br/>' . __('Your server\'s PHP version: ', 'swiftypress') . '<strong>' . phpversion() . '</strong>' .
          '</div>';
 }
 
@@ -66,7 +66,7 @@ function SwiftyPress_PhpVersionCheck() {
  */
 function SwiftyPress_i18n_init() {
     $pluginDir = dirname(plugin_basename(__FILE__));
-    load_plugin_textdomain('swifty-press', false, $pluginDir . '/languages/');
+    load_plugin_textdomain('swiftypress', false, $pluginDir . '/languages/');
 }
 
 
@@ -81,6 +81,6 @@ add_action('plugins_loadedi','SwiftyPress_i18n_init');
 // If it is successful, continue with initialization for this plugin
 if (SwiftyPress_PhpVersionCheck()) {
     // Only load and run the init function if we know PHP version can parse it
-    include_once('swifty-press_init.php');
+    include_once('swiftypress_init.php');
     SwiftyPress_init(__FILE__);
 }
