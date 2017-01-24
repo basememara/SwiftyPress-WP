@@ -1,7 +1,7 @@
 <?php
 
-
 include_once('SwiftyPress_LifeCycle.php');
+include_once('SwiftyPress_REST_Post_Controller.php');
 
 class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
@@ -18,10 +18,12 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         );
     }
 
-//    protected function getOptionValueI18nString($optionValue) {
-//        $i18nValue = parent::getOptionValueI18nString($optionValue);
-//        return $i18nValue;
-//    }
+    /*
+    protected function getOptionValueI18nString($optionValue) {
+        $i18nValue = parent::getOptionValueI18nString($optionValue);
+        return $i18nValue;
+    }
+    */
 
     protected function initOptions() {
         $options = $this->getOptionMetaData();
@@ -78,7 +80,6 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
     }
 
     public function addActionsAndFilters() {
-
         // Add options administration page
         // http://plugin.michael-simpson.com/?page_id=47
         add_action('admin_menu', array(&$this, 'addSettingsSubMenuPage'));
@@ -93,7 +94,7 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
         // Add Actions & Filters
         // http://plugin.michael-simpson.com/?page_id=37
-
+        add_action('rest_api_init', array(&$this, 'register_rest_routes'));
 
         // Adding scripts & styles to all pages
         // Examples:
@@ -108,15 +109,12 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
         // Register AJAX hooks
         // http://plugin.michael-simpson.com/?page_id=41
-
         add_action('wp_head', array(&$this, 'add_meta'));
-    		add_filter('json_endpoints', array(&$this, 'register_routes'));
-    		add_filter('json_prepare_post', array(&$this, 'register_post_extensions'), 10, 3);
-    		add_action('wp_json_server_before_serve', array(&$this, 'pre_register_routes'));
 
+        // Add styles and scripts for mobile app presentation
         if (isset($_GET['mobileembed']) && $_GET['mobileembed'] == "1") {
             wp_enqueue_style('mobileembed-style', get_stylesheet_directory_uri() . '/mobile-embed.css', __FILE__);
-			      wp_enqueue_script('mobileembed-script', plugins_url('js/mobile-embed.js', __FILE__), array('jquery'));
+			wp_enqueue_script('mobileembed-script', plugins_url('js/mobile-embed.js', __FILE__), array('jquery'));
         }
     }
 
@@ -142,39 +140,10 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         echo '<meta name="msapplication-TileColor" content="#da532c">';
         echo '<meta name="msapplication-TileImage" content="/mstile-144x144.png">';
     }
-
-    public function register_routes($routes) {
-        $routes['/comments/count'] = array(
-            array(array($this, 'get_comment_count'), WP_JSON_Server::READABLE)
-        );
-
-        $routes['/comments/(?P<id>[\d]+)/count'] = array(
-            array(array($this, 'get_comment_count_for_post'), WP_JSON_Server::READABLE)
-        );
-
-        return $routes;
-    }
-
-    public function get_comment_count() {
-        global $wpdb;
-        $sql = "SELECT id AS ID, comment_count AS comments_count FROM {$wpdb->prefix}posts WHERE post_type = 'post' AND comment_count > 0 ORDER BY comment_count DESC";
-        return $wpdb->get_results($sql);
-    }
-
-    public function get_comment_count_for_post($id) {
-        $post = get_post($id);
-        return (int)$post->comment_count;
-    }
-
-    public function pre_register_routes() {
-        if (is_plugin_active('crayon-syntax-highlighter/crayon_wp.class.php')) {
-            // Avoid <pre><code> content from being mangled up in web services
-            remove_filter('the_posts', 'CrayonWP::the_posts', 100);
-        }
-    }
-
-    public function register_post_extensions($postray, $postdat, $context) {
-        $extensions = array("comment_count" => wp_count_comments($postdat['ID']));
-        return array_merge($postray, $extensions);
+ 
+    // Function to register our new routes from the controller.
+    public function register_rest_routes() {
+        $controller = new SwiftyPress_REST_Post_Controller();
+        $controller->register_routes();
     }
 }
