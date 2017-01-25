@@ -146,6 +146,7 @@ class SwiftyPress_REST_Post_Controller {
                 'email' => get_the_author_meta('user_email', $post->post_author),
                 'name' => get_the_author_meta('display_name', $post->post_author),
                 'link' => get_the_author_meta('url', $post->post_author),
+                'avatar' => get_avatar_url($post->post_author),
                 'description' => get_the_author_meta('description', $post->post_author)
             );
         }
