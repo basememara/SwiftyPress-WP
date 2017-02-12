@@ -5,7 +5,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
 Tested up to: 4.7
-Stable tag: 0.2
+Stable tag: 0.3
 
 Mobile app framework for your WordPress blog.
 
@@ -27,3 +27,9 @@ Mobile app framework for your WordPress blog.
 
 = 0.1 =
 - Initial Revision
+
+= 0.2 =
+- Minor fixes
+
+= 0.1 =
+- Updated to WordPress REST API
