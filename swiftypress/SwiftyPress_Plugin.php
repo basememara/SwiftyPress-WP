@@ -143,7 +143,7 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
  
     // Function to register our new routes from the controller.
     public function register_rest_routes() {
-        $controller = new SwiftyPress_REST_Post_Controller();
-        $controller->register_routes();
+        $postController = new SwiftyPress_REST_Post_Controller();
+        $postController->register_routes();
     }
 }

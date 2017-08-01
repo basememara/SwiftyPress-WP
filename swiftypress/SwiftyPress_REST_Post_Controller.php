@@ -183,7 +183,7 @@ class SwiftyPress_REST_Post_Controller {
                             'name' => $item->name,
                             'slug' => $item->slug,
                             'taxonomy' => $item->taxonomy,
-                            'count' => $item->count
+                            'count' => (int)$item->count
                         );
                     }, 
                     $terms
@@ -204,7 +204,7 @@ class SwiftyPress_REST_Post_Controller {
                             'name' => $item->name,
                             'slug' => $item->slug,
                             'taxonomy' => $item->taxonomy,
-                            'count' => $item->count
+                            'count' => (int)$item->count
                         );
                     }, 
                     $terms
