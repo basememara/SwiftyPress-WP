@@ -1,6 +1,6 @@
 <?php
 
-class SwiftyPress_REST_Post_Controller {
+class SwiftyPress_REST_V2_Posts_Controller {
  
     // Here initialize our namespace and resource name.
     public function __construct() {

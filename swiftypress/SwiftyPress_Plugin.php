@@ -1,7 +1,9 @@
 <?php
 
 include_once('SwiftyPress_LifeCycle.php');
-include_once('SwiftyPress_REST_Post_Controller.php');
+include_once('SwiftyPress_REST_V2_Posts_Controller.php');
+include_once('SwiftyPress_REST_V3.php');
+include_once('SwiftyPress_REST_V3_Posts_Controller.php');
 
 class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
@@ -143,7 +145,10 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
  
     // Function to register our new routes from the controller.
     public function register_rest_routes() {
-        $postController = new SwiftyPress_REST_Post_Controller();
-        $postController->register_routes();
+        $postsV2Controller = new SwiftyPress_REST_V2_Posts_Controller();
+        $postsV2Controller->register_routes();
+        
+        $postsV3Controller = new SwiftyPress_REST_V3_Posts_Controller();
+        $postsV3Controller->register_routes();
     }
 }
