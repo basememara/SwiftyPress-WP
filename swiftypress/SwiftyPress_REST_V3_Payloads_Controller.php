@@ -1,38 +1,30 @@
 <?php
 
-class SwiftyPress_REST_V3_Posts_Controller extends SwiftyPress_REST_V3 {
+class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
  
     // Here initialize our namespace and resource name.
     public function __construct() {
         parent::__construct();
-        $this->resource_name = 'posts';
+        $this->resource_name = 'payloads';
     }
  
     // Register our routes.
     public function register_routes() {
-        register_rest_route($this->namespace, '/' . $this->resource_name, array(
+        register_rest_route($this->namespace, '/' . $this->resource_name . '/modified', array(
             array(
                 'methods' => 'GET',
-                'callback' => array($this, 'get_posts')
-            ),
-            'schema' => array($this, 'get_post_schema')
-        ));
-
-        register_rest_route($this->namespace, '/' . $this->resource_name . '/(?P<id>[\d]+)', array(
-            array(
-                'methods' => 'GET',
-                'callback' => array($this, 'get_post')
+                'callback' => array($this, 'get_modified')
             ),
             'schema' => array($this, 'get_post_schema')
         ));
     }
  
     /**
-     * Get the modified posts and outputs them as a rest response.
+     * Get the modified objects and outputs them as a rest response.
      *
      * @param WP_REST_Request $request Current request.
      */
-    public function get_posts($request) {
+    public function get_modified($request) {
         $data = array(
             'posts' => array(),
             'categories' => array(),
@@ -40,40 +32,32 @@ class SwiftyPress_REST_V3_Posts_Controller extends SwiftyPress_REST_V3 {
             'authors' => array()
         );
 
-        // Construct query options
-        $params = array();
+        // Construct posts query options
+        $post_params = array();
         
-        if (isset($request['per_page'])) {
-            $perPage = (int)$request['per_page'];
+        if (isset($request['after'])) {
+            $modified_after = '@' . $request['after'];
             
-            if ($perPage > 0) {
-                $params['posts_per_page'] = $perPage;
-            }
-        } else {
-            $params['posts_per_page'] = 10;
+            $post_params['date_query'] = array(
+                array(
+                    'after' => $modified_after,
+                    'column' => 'post_modified'
+                )
+            );
         }
 
-        if (isset($request['page'])) {
-            $params['paged'] = (int)$request['page'];
-        }
+        $post_params['orderby'] = array('post_modified' => 'DESC');
+        $post_params['nopaging'] = true;
 
-        if (isset($request['orderby'])) {
-            $params['orderby'] = $request['orderby'];
-        }
-
-        if (isset($request['order'])) {
-            $params['order'] = strtoupper($request['order']);
-        }
-
-        $query = new WP_Query($params);
+        $post_query = new WP_Query($post_params);
  
-        if ($query->have_posts()) {
+        if ($post_query->have_posts()) {
             // Used for preventing duplicates
             $categoryIDs = array();
             $tagIDs = array();
             $authorIDs = array();
 
-            foreach ($query->posts as $post) {
+            foreach ($post_query->posts as $post) {
                 // Add post
                 $data['posts'][] = $this->prepare_response_for_render(
                     $this->prepare_post_for_response($post, $request)
@@ -125,7 +109,39 @@ class SwiftyPress_REST_V3_Posts_Controller extends SwiftyPress_REST_V3 {
                 }
             }
         }
- 
+        
+        // Construct authors query options
+        $user_params = array(
+            'meta_key'  => 'wpsp_profile_modified'
+        );
+        
+        if (isset($request['after'])) {
+            $user_params['meta_query'] = array(
+                array(
+                    'key' => 'wpsp_profile_modified',
+                    'value' => $request['after'],
+                    'type' => 'numeric',
+                    'compare' => '>'
+                )
+            );
+        }
+
+        $user_params['orderby'] = array('meta_value_num' => 'DESC');
+        $user_params['has_published_posts'] = true;
+
+        $user_query = new WP_User_Query($user_params);
+
+        foreach ($user_query->get_results() as $author) {
+            // Add unique authors to output
+            if (!in_array($author->ID, $authorIDs)) {
+                $data['authors'][] = $this->prepare_response_for_render(
+                    $this->prepare_author_for_response($author->ID)
+                );
+
+                $authorIDs[] = $author->ID;
+            }
+        }
+
         // Return all response data.
         return rest_ensure_response($data);
     }

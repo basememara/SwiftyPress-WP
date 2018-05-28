@@ -38,8 +38,8 @@ class SwiftyPress_REST_V3 {
             $post_data['excerpt'] = $post->post_excerpt;
         }
         
-        if (isset($schema['properties']['date'])) {
-            $post_data['date'] = get_the_date($this->date_format, $post->ID);
+        if (isset($schema['properties']['created'])) {
+            $post_data['created'] = get_the_date($this->date_format, $post->ID);
         }
         
         if (isset($schema['properties']['modified'])) {
@@ -144,12 +144,23 @@ class SwiftyPress_REST_V3 {
     * @param WP_Post $term The author object whose response is being prepared.
     */
     public function prepare_author_for_response($authorID) {
+        $user_registered = date(
+            $this->date_format,
+            strtotime(get_the_author_meta('user_registered', $authorID))
+        );
+
+        $user_modified = get_the_author_meta('wpsp_profile_modified', $authorID);
+
         $author_data = array(
             'id' => (int)$authorID,
             'name' => get_the_author_meta('display_name', $authorID),
             'link' => get_the_author_meta('url', $authorID),
             'avatar' => get_avatar_url($authorID),
-            'description' => get_the_author_meta('description', $authorID)
+            'description' => get_the_author_meta('description', $authorID),
+            'created' => $user_registered,
+            'modified' => !empty($user_modified)
+                ? gmdate($this->date_format, $user_modified)
+                : $user_registered
         );
 
         return rest_ensure_response($author_data);
@@ -220,12 +231,12 @@ class SwiftyPress_REST_V3 {
                     'description' => esc_html__('The excerpt for the object.', 'my-textdomain'),
                     'type'  => 'string'
                 ),
-                'date' => array(
-                    'description' => esc_html__('The date for the object.', 'my-textdomain'),
+                'created' => array(
+                    'description' => esc_html__('The created date for the object.', 'my-textdomain'),
                     'type'  => 'string'
                 ),
                 'modified' => array(
-                    'description' => esc_html__('The modified for the object.', 'my-textdomain'),
+                    'description' => esc_html__('The modified date for the object.', 'my-textdomain'),
                     'type'  => 'string'
                 ),
                 'comment_count' => array(

@@ -3,7 +3,9 @@
 include_once('SwiftyPress_LifeCycle.php');
 include_once('SwiftyPress_REST_V2_Posts_Controller.php');
 include_once('SwiftyPress_REST_V3.php');
+include_once('SwiftyPress_REST_V3_Payloads_Controller.php');
 include_once('SwiftyPress_REST_V3_Posts_Controller.php');
+include_once('SwiftyPress_Profile_Manager.php');
 
 class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
@@ -98,6 +100,9 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=37
         add_action('rest_api_init', array(&$this, 'register_rest_routes'));
 
+        // Store profile modified timestamp for clients to receive updates
+        add_action('profile_update', array(&$this, 'profile_update'));
+
         // Adding scripts & styles to all pages
         // Examples:
         //        wp_enqueue_script('jquery');
@@ -148,7 +153,15 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         $postsV2Controller = new SwiftyPress_REST_V2_Posts_Controller();
         $postsV2Controller->register_routes();
         
+        $payloadsV3Controller = new SwiftyPress_REST_V3_Payloads_Controller();
+        $payloadsV3Controller->register_routes();
+        
         $postsV3Controller = new SwiftyPress_REST_V3_Posts_Controller();
         $postsV3Controller->register_routes();
+    }
+    
+    public function profile_update($user_id) {
+        $profileManager = new SwiftyPress_Profile_Manager();
+        $profileManager->subscribe_updates($user_id);
     }
 }
