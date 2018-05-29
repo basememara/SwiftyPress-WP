@@ -29,7 +29,8 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
             'posts' => array(),
             'categories' => array(),
             'tags' => array(),
-            'authors' => array()
+            'authors' => array(),
+            'media' => array()
         );
 
         // Construct posts query options
@@ -53,22 +54,25 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
  
         if ($post_query->have_posts()) {
             // Used for preventing duplicates
-            $categoryIDs = array();
-            $tagIDs = array();
-            $authorIDs = array();
+            $category_ids = array();
+            $tag_ids = array();
+            $author_ids = array();
+            $media_ids = array();
 
             foreach ($post_query->posts as $post) {
                 // Add post
-                $data['posts'][] = $this->prepare_response_for_render(
+                $post_data = $this->prepare_response_for_render(
                     $this->prepare_post_for_response($post, $request)
                 );
+        
+                $data['posts'][] = $post_data;
 
                 // Add unique categories
                 $categories = array();
                 foreach (get_the_category($post->ID) as $term) {
-                    if (!in_array($term->term_id, $categoryIDs)) {
+                    if (!in_array($term->term_id, $category_ids)) {
                         $categories[] = $term;
-                        $categoryIDs[] = $term->term_id;
+                        $category_ids[] = $term->term_id;
                     }
                 }
 
@@ -84,9 +88,9 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
                 // Add unique tags
                 $tags = array();
                 foreach (get_the_tags($post->ID) as $term) {
-                    if (!in_array($term->term_id, $tagIDs)) {
+                    if (!in_array($term->term_id, $tag_ids)) {
                         $tags[] = $term;
-                        $tagIDs[] = $term->term_id;
+                        $tag_ids[] = $term->term_id;
                     }
                 }
 
@@ -100,12 +104,22 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
                 }
                 
                 // Add unique authors
-                if (!in_array($post->post_author, $authorIDs)) {
+                if (!in_array($post->post_author, $author_ids)) {
                     $data['authors'][] = $this->prepare_response_for_render(
                         $this->prepare_author_for_response($post->post_author)
                     );
 
-                    $authorIDs[] = $post->post_author;
+                    $author_ids[] = $post->post_author;
+                }
+                
+                // Add unique media
+                $attachment_id = $post_data['featured_media'];
+                if (isset($attachment_id) && !in_array($attachment_id, $media_ids)) {
+                    $data['media'][] = $this->prepare_response_for_render(
+                        $this->prepare_media_for_response($attachment_id)
+                    );
+
+                    $media_ids[] = $attachment_id;
                 }
             }
         }
@@ -133,12 +147,12 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
 
         foreach ($user_query->get_results() as $author) {
             // Add unique authors to output
-            if (!in_array($author->ID, $authorIDs)) {
+            if (!in_array($author->ID, $author_ids)) {
                 $data['authors'][] = $this->prepare_response_for_render(
                     $this->prepare_author_for_response($author->ID)
                 );
 
-                $authorIDs[] = $author->ID;
+                $author_ids[] = $author->ID;
             }
         }
 

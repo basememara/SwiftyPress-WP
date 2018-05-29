@@ -60,22 +60,7 @@ class SwiftyPress_REST_V3 {
         
         if (isset($schema['properties']['featured_media'])) {
             $attachment_id = get_post_thumbnail_id($post->ID);
-            
-            if ($attachment_id > 0) {
-                $full = wp_get_attachment_image_src($attachment_id, 'full');
-                $thumbnail = wp_get_attachment_image_src($attachment_id, 'medium');
-                
-                $post_data['featured_media'] = array(
-                    'link' => $full[0],
-                    'width' => (int)$full[1],
-                    'height' => (int)$full[2],
-                    'thumbnail_link' => $thumbnail[0],
-                    'thumbnail_width' => (int)$thumbnail[1],
-                    'thumbnail_height' => (int)$thumbnail[2]
-                );
-            } else {
-                $post_data['featured_media'] = null;
-            }
+            $post_data['featured_media'] = $attachment_id > 0 ? (int)$attachment_id : null;
         }
         
         if (isset($schema['properties']['categories'])) {
@@ -143,20 +128,20 @@ class SwiftyPress_REST_V3 {
     *
     * @param WP_Post $term The author object whose response is being prepared.
     */
-    public function prepare_author_for_response($authorID) {
+    public function prepare_author_for_response($author_id) {
         $user_registered = date(
             $this->date_format,
-            strtotime(get_the_author_meta('user_registered', $authorID))
+            strtotime(get_the_author_meta('user_registered', $author_id))
         );
 
-        $user_modified = get_the_author_meta('wpsp_profile_modified', $authorID);
+        $user_modified = get_the_author_meta('wpsp_profile_modified', $author_id);
 
         $author_data = array(
-            'id' => (int)$authorID,
-            'name' => get_the_author_meta('display_name', $authorID),
-            'link' => get_the_author_meta('url', $authorID),
-            'avatar' => get_avatar_url($authorID),
-            'description' => get_the_author_meta('description', $authorID),
+            'id' => (int)$author_id,
+            'name' => get_the_author_meta('display_name', $author_id),
+            'link' => get_the_author_meta('url', $author_id),
+            'avatar' => get_avatar_url($author_id),
+            'description' => get_the_author_meta('description', $author_id),
             'created' => $user_registered,
             'modified' => !empty($user_modified)
                 ? gmdate($this->date_format, $user_modified)
@@ -164,6 +149,32 @@ class SwiftyPress_REST_V3 {
         );
 
         return rest_ensure_response($author_data);
+    }
+    
+    /**
+    * Matches the media data to the schema we want.
+    *
+    * @param WP_Post $term The media object whose response is being prepared.
+    */
+    public function prepare_media_for_response($attachment_id) {
+        if (empty($attachment_id) || $attachment_id <= 0) {
+            return null;
+        }
+
+        $full = wp_get_attachment_image_src($attachment_id, 'full');
+        $thumbnail = wp_get_attachment_image_src($attachment_id, 'medium');
+        
+        $media_data = array(
+            'id' => (int)$attachment_id,
+            'link' => $full[0],
+            'width' => (int)$full[1],
+            'height' => (int)$full[2],
+            'thumbnail_link' => $thumbnail[0],
+            'thumbnail_width' => (int)$thumbnail[1],
+            'thumbnail_height' => (int)$thumbnail[2]
+        );
+
+        return rest_ensure_response($media_data);
     }
  
     /**
@@ -253,7 +264,7 @@ class SwiftyPress_REST_V3 {
                 ),
                 'featured_media' => array(
                     'description' => esc_html__('The featured media for the object.', 'my-textdomain'),
-                    'type' => 'object'
+                    'type' => 'integer'
                 ),
                 'content' => array(
                     'description' => esc_html__('The content for the object.', 'my-textdomain'),
