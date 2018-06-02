@@ -4,18 +4,32 @@ Tags: mobile, mobile app, native app, ios, ios app, iphone app, apple, apple wat
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
-Tested up to: 4.7
-Stable tag: 0.3
+Tested up to: 4.9.6
+Stable tag: 0.4
 
 Mobile app framework for your WordPress blog.
 
 == Description ==
 
-Mobile app framework for your WordPress blog.
+With SwiftyPress, you'll be supercharging your WordPress site for mobile compatibility and consumption!
+
+[**Checkout the GitHub Repository**](https://github.com/ZamzamInc/SwiftyPress-WP)
+
+= Features =
+- Smart App Banner for Safari and iOS 
+- Google App Indexing
+- Better REST API endpoints
 
 == Installation ==
-1. Upload swiftypress to the /wp-content/plugins/ directory
-2. Activate the plugin through the \'Plugins\' menu in WordPress
+1. Search or add the plugin through the \'Plugins\' menu in WordPress
+2. Activate the plugin
+
+= Requirements =
+- WordPress 4.7+
+- PHP 5.6+
+
+= Usage =
+Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. Enter the settings to manage your site's mobile preferences.
 
 == Frequently Asked Questions ==
 
@@ -31,5 +45,8 @@ Mobile app framework for your WordPress blog.
 = 0.2 =
 - Minor fixes
 
-= 0.1 =
+= 0.3 =
 - Updated to WordPress REST API
+
+= 0.4 =
+- Added V3 WordPress REST API
