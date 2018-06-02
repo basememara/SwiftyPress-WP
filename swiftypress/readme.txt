@@ -1,5 +1,5 @@
 === SwiftyPress ===
-Contributors: basememara
+Contributors: zamzaminc
 Tags: mobile, mobile app, native app, ios, ios app, iphone app, apple, apple watch, wordpress mobile, android, android app, mobile web
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
