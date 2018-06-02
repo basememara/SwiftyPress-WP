@@ -136,16 +136,6 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         // Google App Indexing
         echo '<link rel="alternate" href="android-app://' . $this->getOption('AndroidID') . '/' . 'http/' . $url . '" />';
         echo '<link rel="alternate" href="ios-app://' . $this->getOption('iOSID') . '/' . 'http/' . $url . '" />';
-
-        // App Icons
-        echo '<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">';
-        echo '<link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">';
-        echo '<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">';
-        echo '<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">';
-        echo '<link rel="manifest" href="/manifest.json">';
-        echo '<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">';
-        echo '<meta name="msapplication-TileColor" content="#da532c">';
-        echo '<meta name="msapplication-TileImage" content="/mstile-144x144.png">';
     }
  
     // Function to register our new routes from the controller.
