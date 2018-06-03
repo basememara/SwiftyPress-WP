@@ -3,7 +3,7 @@
    Plugin Name: SwiftyPress
    Plugin URI:  http://zamzam.io
    Description: Mobile app framework for your WordPress blog.
-   Version:     0.5
+   Version:     0.6
    Author:      zamzaminc
    Author URI:  http://zamzam.io
    Text Domain: swiftypress

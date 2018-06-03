@@ -5,7 +5,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
 Tested up to: 4.9.6
-Stable tag: 0.5
+Stable tag: 0.6
 
 Mobile app framework for your WordPress blog.
 
@@ -20,6 +20,9 @@ With SwiftyPress, you'll be supercharging your WordPress site for mobile compati
 - Google App Indexing
 - Better REST API endpoints
 
+= Usage =
+Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. Enter the settings to manage your site's mobile preferences.
+
 == Installation ==
 1. Search or add the plugin through the \'Plugins\' menu in WordPress
 2. Activate the plugin
@@ -27,9 +30,6 @@ With SwiftyPress, you'll be supercharging your WordPress site for mobile compati
 = Requirements =
 - WordPress 4.7+
 - PHP 5.6+
-
-= Usage =
-Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. Enter the settings to manage your site's mobile preferences.
 
 == Frequently Asked Questions ==
 
@@ -53,3 +53,6 @@ Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. E
 
 = 0.5 =
 - Updated plugin owner
+
+= 0.6 =
+- Updated readme
