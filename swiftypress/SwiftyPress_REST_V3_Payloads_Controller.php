@@ -68,41 +68,47 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
                 $data['posts'][] = $post_data;
 
                 // Add unique categories
-                $categories = array();
-                foreach (get_the_category($post->ID) as $term) {
-                    if (!in_array($term->term_id, $category_ids)) {
-                        $categories[] = $term;
-                        $category_ids[] = $term->term_id;
+                $post_categories = get_the_category($post->ID);
+                if (!empty($post_categories)) {
+                    $categories = array();
+                    foreach ($post_categories as $term) {
+                        if (!in_array($term->term_id, $category_ids)) {
+                            $categories[] = $term;
+                            $category_ids[] = $term->term_id;
+                        }
                     }
-                }
 
-                if (!empty($categories)) {
-                    $data['categories'] = array_merge(
-                        $data['categories'],
-                        $this->prepare_response_for_render(
-                            $this->prepare_term_for_response($categories)
-                        )
-                    );
+                    if (!empty($categories)) {
+                        $data['categories'] = array_merge(
+                            $data['categories'],
+                            $this->prepare_response_for_render(
+                                $this->prepare_term_for_response($categories)
+                            )
+                        );
+                    }
                 }
                 
                 // Add unique tags
-                $tags = array();
-                foreach (get_the_tags($post->ID) as $term) {
-                    if (!in_array($term->term_id, $tag_ids)) {
-                        $tags[] = $term;
-                        $tag_ids[] = $term->term_id;
+                $post_tags = get_the_tags($post->ID);
+                if (!empty($post_tags)) {
+                    $tags = array();
+                    foreach ($post_tags as $term) {
+                        if (!in_array($term->term_id, $tag_ids)) {
+                            $tags[] = $term;
+                            $tag_ids[] = $term->term_id;
+                        }
+                    }
+
+                    if (!empty($tags)) {
+                        $data['tags'] = array_merge(
+                            $data['tags'],
+                            $this->prepare_response_for_render(
+                                $this->prepare_term_for_response($tags)
+                            )
+                        );
                     }
                 }
 
-                if (!empty($tags)) {
-                    $data['tags'] = array_merge(
-                        $data['tags'],
-                        $this->prepare_response_for_render(
-                            $this->prepare_term_for_response($tags)
-                        )
-                    );
-                }
-                
                 // Add unique authors
                 if (!in_array($post->post_author, $author_ids)) {
                     $data['authors'][] = $this->prepare_response_for_render(
