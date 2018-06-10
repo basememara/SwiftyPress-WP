@@ -5,7 +5,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
 Tested up to: 4.9.6
-Stable tag: 0.6
+Stable tag: 0.7
 
 Mobile app framework for your WordPress blog.
 
@@ -56,3 +56,6 @@ Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. E
 
 = 0.6 =
 - Updated readme
+
+= 0.7 =
+- Fix REST endpoint for posts with no tags
