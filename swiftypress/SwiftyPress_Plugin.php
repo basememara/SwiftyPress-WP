@@ -5,7 +5,6 @@ include_once('SwiftyPress_REST_V2_Posts_Controller.php');
 include_once('SwiftyPress_REST_V3.php');
 include_once('SwiftyPress_REST_V3_Payloads_Controller.php');
 include_once('SwiftyPress_REST_V3_Posts_Controller.php');
-include_once('SwiftyPress_Profile_Manager.php');
 
 class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
@@ -100,6 +99,9 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=37
         add_action('rest_api_init', array(&$this, 'register_rest_routes'));
 
+        // Update post modified timestamp when comment is posted
+        add_action('comment_post', array(&$this, 'comment_post'), 10, 3);
+
         // Store profile modified timestamp for clients to receive updates
         add_action('profile_update', array(&$this, 'profile_update'));
 
@@ -150,8 +152,22 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         $postsV3Controller->register_routes();
     }
     
+    public function comment_post($comment_ID, $comment_approved, $commentdata) {
+        if ($comment_approved !== 1) {
+            return;
+        }
+
+        wp_update_post(
+            array (
+                'ID' => $commentdata['comment_post_ID'],
+                'post_modified' => current_time('timestamp', false),
+                'post_modified_gmt' => current_time('timestamp', true)
+            )
+        );
+    }
+    
     public function profile_update($user_id) {
-        $profileManager = new SwiftyPress_Profile_Manager();
-        $profileManager->subscribe_updates($user_id);
+        // Store profile last modified date
+        update_user_meta($user_id, 'wpsp_profile_modified', current_time('timestamp', true));
     }
 }
