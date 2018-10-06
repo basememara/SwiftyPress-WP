@@ -59,3 +59,6 @@ Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. E
 
 = 0.7 =
 - Fix REST endpoint for posts with no tags
+
+= 0.9 =
+- Update post modified date when comment is added and approved
