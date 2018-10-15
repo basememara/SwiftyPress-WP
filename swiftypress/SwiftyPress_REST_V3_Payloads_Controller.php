@@ -59,7 +59,9 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
             $author_ids = array();
             $media_ids = array();
 
-            foreach ($post_query->posts as $post) {
+            foreach ($post_query->posts as $element) {
+                $post = get_post($element->ID);
+
                 // Add post
                 $post_data = $this->prepare_response_for_render(
                     $this->prepare_post_for_response($post, $request)
@@ -162,45 +164,6 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
             }
         }
 
-        // Return all response data.
-        return rest_ensure_response($data);
-    }
- 
-    /**
-     * Get the post and outputs it as a rest response.
-     *
-     * @param WP_REST_Request $request Current request.
-     */
-    public function get_post($request) {
-        $id = (int)$request['id'];
-        $post = get_post($id);
-        $data = array(
-            'post' => null,
-            'categories' => array(),
-            'tags' => array(),
-            'author' => null
-        );
- 
-        if (empty($post)) {
-            return rest_ensure_response($data);
-        }
- 
-        $data['post'] = $this->prepare_response_for_render(
-            $this->prepare_post_for_response($post)
-        );
-
-        $data['categories'] = $this->prepare_response_for_render(
-            $this->prepare_term_for_response(get_the_category($post->ID))
-        );
-
-        $data['tags'] = $this->prepare_response_for_render(
-            $this->prepare_term_for_response(get_the_tags($post->ID))
-        );
-
-        $data['author'] = $this->prepare_response_for_render(
-            $this->prepare_author_for_response($post->post_author)
-        );
-        
         // Return all response data.
         return rest_ensure_response($data);
     }

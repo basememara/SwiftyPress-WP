@@ -5,7 +5,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
 Tested up to: 4.9.8
-Stable tag: 0.9
+Stable tag: 1.0
 
 Mobile app framework for your WordPress blog.
 
@@ -62,3 +62,6 @@ Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. E
 
 = 0.9 =
 - Update post modified date when comment is added and approved
+
+= 1.0 =
+- Ensure content filters applied to post collection
