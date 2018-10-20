@@ -5,7 +5,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
 Tested up to: 4.9.8
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Mobile app framework for your WordPress blog.
 
@@ -65,3 +65,6 @@ Go to `SwiftyPress` in the WordPress menu to view the plugin's user interface. E
 
 = 1.0 =
 - Ensure content filters applied to post collection
+
+= 1.0.1 =
+- Consistently use GMT for modified date comparison and JSON output

@@ -39,11 +39,11 @@ class SwiftyPress_REST_V3 {
         }
         
         if (isset($schema['properties']['created'])) {
-            $post_data['created'] = get_the_date($this->date_format, $post->ID);
+            $post_data['created'] = get_post_time($this->date_format, true, $post->ID);
         }
         
         if (isset($schema['properties']['modified'])) {
-            $post_data['modified'] = get_post_modified_time($this->date_format, null, $post->ID);
+            $post_data['modified'] = get_post_modified_time($this->date_format, true, $post->ID);
         }
         
         if (isset($schema['properties']['comment_count'])) {

@@ -27,10 +27,10 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
     public function get_modified($request) {
         $data = array(
             'posts' => array(),
-            'categories' => array(),
-            'tags' => array(),
             'authors' => array(),
-            'media' => array()
+            'media' => array(),
+            'categories' => array(),
+            'tags' => array()
         );
 
         // Construct posts query options
@@ -42,22 +42,22 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
             $post_params['date_query'] = array(
                 array(
                     'after' => $modified_after,
-                    'column' => 'post_modified'
+                    'column' => 'post_modified_gmt'
                 )
             );
         }
 
-        $post_params['orderby'] = array('post_modified' => 'DESC');
+        $post_params['orderby'] = array('post_modified_gmt' => 'DESC');
         $post_params['nopaging'] = true;
 
         $post_query = new WP_Query($post_params);
  
         if ($post_query->have_posts()) {
             // Used for preventing duplicates
-            $category_ids = array();
-            $tag_ids = array();
             $author_ids = array();
             $media_ids = array();
+            $category_ids = array();
+            $tag_ids = array();
 
             foreach ($post_query->posts as $element) {
                 $post = get_post($element->ID);
@@ -68,6 +68,25 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
                 );
         
                 $data['posts'][] = $post_data;
+
+                // Add unique authors
+                if (!in_array($post->post_author, $author_ids)) {
+                    $data['authors'][] = $this->prepare_response_for_render(
+                        $this->prepare_author_for_response($post->post_author)
+                    );
+
+                    $author_ids[] = $post->post_author;
+                }
+                
+                // Add unique media
+                $attachment_id = $post_data['featured_media'];
+                if (isset($attachment_id) && !in_array($attachment_id, $media_ids)) {
+                    $data['media'][] = $this->prepare_response_for_render(
+                        $this->prepare_media_for_response($attachment_id)
+                    );
+
+                    $media_ids[] = $attachment_id;
+                }
 
                 // Add unique categories
                 $post_categories = get_the_category($post->ID);
@@ -109,25 +128,6 @@ class SwiftyPress_REST_V3_Payloads_Controller extends SwiftyPress_REST_V3 {
                             )
                         );
                     }
-                }
-
-                // Add unique authors
-                if (!in_array($post->post_author, $author_ids)) {
-                    $data['authors'][] = $this->prepare_response_for_render(
-                        $this->prepare_author_for_response($post->post_author)
-                    );
-
-                    $author_ids[] = $post->post_author;
-                }
-                
-                // Add unique media
-                $attachment_id = $post_data['featured_media'];
-                if (isset($attachment_id) && !in_array($attachment_id, $media_ids)) {
-                    $data['media'][] = $this->prepare_response_for_render(
-                        $this->prepare_media_for_response($attachment_id)
-                    );
-
-                    $media_ids[] = $attachment_id;
                 }
             }
         }
