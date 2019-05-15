@@ -47,8 +47,14 @@ class SwiftyPress_REST_V4_Modified_Controller extends SwiftyPress_REST_V4 {
             );
         }
 
-        $post_params['orderby'] = array('post_modified_gmt' => 'DESC');
-        $post_params['nopaging'] = true;
+        if (isset($request['limit']) && is_numeric($request['limit']) && (int)$request['limit'] > 0) {
+            $post_params['posts_per_page'] = (int)$request['limit'];
+        } else {
+            $post_params['nopaging'] = true;
+        }
+
+        $post_params['orderby'] = 'post_modified';
+        $post_params['order'] = 'DESC';
 
         $post_query = new WP_Query($post_params);
  
