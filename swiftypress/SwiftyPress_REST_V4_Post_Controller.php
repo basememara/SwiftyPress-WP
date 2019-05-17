@@ -49,15 +49,16 @@ class SwiftyPress_REST_V4_Post_Controller extends SwiftyPress_REST_V4 {
 
         $data['post'] = $post_data;
 
-        $data['author'] = $this->prepare_response_for_render(
-            $this->prepare_author_for_response($post->post_author)
-        );
+        $author_data = $this->prepare_author_for_response($post->post_author);
+        if (!empty($author_data)) {
+            $data['author'] = $this->prepare_response_for_render($author_data);
+        }
         
-        $attachment_id = $post_data['featured_media'];
-        $data['media'] = $this->prepare_response_for_render(
-            $this->prepare_media_for_response($attachment_id)
-        );
-
+        $media_data = $this->prepare_media_for_response($post_data['featured_media']);
+        if (!empty($media_data)) {
+            $data['media'] = $this->prepare_response_for_render($media_data);
+        }
+        
         $data['categories'] = $this->prepare_response_for_render(
             $this->prepare_term_for_response(get_the_category($post->ID))
         );

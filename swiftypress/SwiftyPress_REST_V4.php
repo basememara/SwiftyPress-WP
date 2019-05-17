@@ -129,11 +129,17 @@ class SwiftyPress_REST_V4 {
     * @param WP_Post $term The author object whose response is being prepared.
     */
     public function prepare_author_for_response($author_id) {
-        $user_registered = date(
-            $this->date_format,
-            strtotime(get_the_author_meta('user_registered', $author_id))
-        );
+        if (empty($author_id) || $author_id <= 0) {
+            return null;
+        }
 
+        $user_registered = get_the_author_meta('user_registered', $author_id);
+
+        if (empty($user_registered)) {
+            return null;
+        }
+
+        $user_created = date($this->date_format, strtotime($user_registered));
         $user_modified = get_the_author_meta('wpsp_profile_modified', $author_id);
 
         $author_data = array(
@@ -142,10 +148,10 @@ class SwiftyPress_REST_V4 {
             'link' => get_the_author_meta('url', $author_id),
             'avatar' => get_avatar_url($author_id),
             'description' => get_the_author_meta('description', $author_id),
-            'created' => $user_registered,
+            'created' => $user_created,
             'modified' => !empty($user_modified)
                 ? gmdate($this->date_format, $user_modified)
-                : $user_registered
+                : $user_created
         );
 
         return rest_ensure_response($author_data);
@@ -163,6 +169,10 @@ class SwiftyPress_REST_V4 {
 
         $full = wp_get_attachment_image_src($attachment_id, 'full');
         $thumbnail = wp_get_attachment_image_src($attachment_id, 'medium');
+
+        if (empty($full)) {
+            return null;
+        }
         
         $media_data = array(
             'id' => (int)$attachment_id,
@@ -277,6 +287,106 @@ class SwiftyPress_REST_V4 {
                 'tags' => array(
                     'description' => esc_html__('The tag IDs for the object.', 'my-textdomain'),
                     'type' => 'array'
+                )
+            )
+        );
+ 
+        return $schema;
+    }
+ 
+    /**
+     * Get our sample schema for a author.
+     *
+     * @param WP_REST_Request $request Current request.
+     */
+    public function get_author_schema($request) {
+        $schema = array(
+            // This tells the spec of JSON Schema we are using which is draft 4.
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
+            // The title property marks the identity of the resource.
+            'title' => 'author',
+            'type' => 'object',
+            // In JSON Schema you can specify object properties in the properties attribute.
+            'properties' => array(
+                'id' => array(
+                    'description' => esc_html__('Unique identifier for the object.', 'my-textdomain'),
+                    'type' => 'integer',
+                    'context' => array('view', 'edit', 'embed'),
+                    'readonly' => true
+                ),
+                'name' => array(
+                    'description' => esc_html__('The name for the object.', 'my-textdomain'),
+                    'type' => 'string'
+                ),
+                'link' => array(
+                    'description' => esc_html__('The link for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                ),
+                'avatar' => array(
+                    'description' => esc_html__('The avatar for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                ),
+                'description' => array(
+                    'description' => esc_html__('The description for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                ),
+                'created' => array(
+                    'description' => esc_html__('The created date for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                ),
+                'modified' => array(
+                    'description' => esc_html__('The modified date for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                )
+            )
+        );
+ 
+        return $schema;
+    }
+ 
+    /**
+     * Get our sample schema for a media.
+     *
+     * @param WP_REST_Request $request Current request.
+     */
+    public function get_media_schema($request) {
+        $schema = array(
+            // This tells the spec of JSON Schema we are using which is draft 4.
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
+            // The title property marks the identity of the resource.
+            'title' => 'media',
+            'type' => 'object',
+            // In JSON Schema you can specify object properties in the properties attribute.
+            'properties' => array(
+                'id' => array(
+                    'description' => esc_html__('Unique identifier for the object.', 'my-textdomain'),
+                    'type' => 'integer',
+                    'context' => array('view', 'edit', 'embed'),
+                    'readonly' => true
+                ),
+                'link' => array(
+                    'description' => esc_html__('The link for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                ),
+                'width' => array(
+                    'description' => esc_html__('The width for the object.', 'my-textdomain'),
+                    'type' => 'integer'
+                ),
+                'height' => array(
+                    'description' => esc_html__('The height for the object.', 'my-textdomain'),
+                    'type' => 'integer'
+                ),
+                'thumbnail_link' => array(
+                    'description' => esc_html__('The thumbnail link for the object.', 'my-textdomain'),
+                    'type'  => 'string'
+                ),
+                'thumbnail_width' => array(
+                    'description' => esc_html__('The thumbnail width for the object.', 'my-textdomain'),
+                    'type' => 'integer'
+                ),
+                'thumbnail_height' => array(
+                    'description' => esc_html__('The thumbnail height for the object.', 'my-textdomain'),
+                    'type' => 'integer'
                 )
             )
         );

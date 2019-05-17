@@ -77,21 +77,23 @@ class SwiftyPress_REST_V4_Modified_Controller extends SwiftyPress_REST_V4 {
 
                 // Add unique authors
                 if (!in_array($post->post_author, $author_ids)) {
-                    $data['authors'][] = $this->prepare_response_for_render(
-                        $this->prepare_author_for_response($post->post_author)
-                    );
-
-                    $author_ids[] = $post->post_author;
+                    $author_data = $this->prepare_author_for_response($post->post_author);
+                    
+                    if (!empty($author_data)) {
+                        $data['authors'][] = $this->prepare_response_for_render($author_data);
+                        $author_ids[] = $post->post_author;
+                    }
                 }
                 
                 // Add unique media
                 $attachment_id = $post_data['featured_media'];
                 if (isset($attachment_id) && !in_array($attachment_id, $media_ids)) {
-                    $data['media'][] = $this->prepare_response_for_render(
-                        $this->prepare_media_for_response($attachment_id)
-                    );
+                    $media_data = $this->prepare_media_for_response($attachment_id);
 
-                    $media_ids[] = $attachment_id;
+                    if (!empty($media_data)) {
+                        $data['media'][] = $this->prepare_response_for_render($media_data);
+                        $media_ids[] = $attachment_id;
+                    }
                 }
 
                 // Add unique categories
