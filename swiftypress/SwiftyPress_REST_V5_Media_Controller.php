@@ -1,6 +1,6 @@
 <?php
 
-class SwiftyPress_REST_V4_Media_Controller extends SwiftyPress_REST_V4 {
+class SwiftyPress_REST_V5_Media_Controller extends SwiftyPress_REST_V5 {
  
     // Here initialize our namespace and resource name.
     public function __construct() {
@@ -13,20 +13,14 @@ class SwiftyPress_REST_V4_Media_Controller extends SwiftyPress_REST_V4 {
         register_rest_route($this->namespace, '/' . $this->resource_name . '/(?P<id>[\d]+)', array(
             array(
                 'methods' => 'GET',
-                'callback' => array($this, 'get_media')
-            ),
-            'schema' => array($this, 'get_media_schema')
+                'callback' => array($this, 'get_item')
+            )
         ));
     }
  
-    /**
-     * Get the media and outputs it as a rest response.
-     *
-     * @param WP_REST_Request $request Current request.
-     */
-    public function get_media($request) {
+    public function get_item($request) {
         $id = (int)$request['id'];
-        $media = $this->prepare_media_for_response($id);
+        $media = $this->prepare_media_for_render($id);
  
         if (empty($media)) {
             return new WP_Error(
@@ -36,9 +30,7 @@ class SwiftyPress_REST_V4_Media_Controller extends SwiftyPress_REST_V4 {
             );
         }
         
-        $data = array(
-            'media' => $this->prepare_response_for_render($media)
-        );
+        $data = array('media' => $media);
         
         // Return all response data.
         return rest_ensure_response($data);

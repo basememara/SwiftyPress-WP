@@ -5,11 +5,11 @@ include_once('SwiftyPress_REST_V2_Posts_Controller.php');
 include_once('SwiftyPress_REST_V3.php');
 include_once('SwiftyPress_REST_V3_Payloads_Controller.php');
 include_once('SwiftyPress_REST_V3_Posts_Controller.php');
-include_once('SwiftyPress_REST_V4.php');
-include_once('SwiftyPress_REST_V4_Modified_Controller.php');
-include_once('SwiftyPress_REST_V4_Post_Controller.php');
-include_once('SwiftyPress_REST_V4_Author_Controller.php');
-include_once('SwiftyPress_REST_V4_Media_Controller.php');
+include_once('SwiftyPress_REST_V5.php');
+include_once('SwiftyPress_REST_V5_Modified_Controller.php');
+include_once('SwiftyPress_REST_V5_Post_Controller.php');
+include_once('SwiftyPress_REST_V5_Author_Controller.php');
+include_once('SwiftyPress_REST_V5_Media_Controller.php');
 
 class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
 
@@ -157,17 +157,17 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         $postsV3Controller = new SwiftyPress_REST_V3_Posts_Controller();
         $postsV3Controller->register_routes();
         
-        $modifiedV4Controller = new SwiftyPress_REST_V4_Modified_Controller();
-        $modifiedV4Controller->register_routes();
+        $modifiedV5Controller = new SwiftyPress_REST_V5_Modified_Controller();
+        $modifiedV5Controller->register_routes();
         
-        $postV4Controller = new SwiftyPress_REST_V4_Post_Controller();
-        $postV4Controller->register_routes();
+        $postV5Controller = new SwiftyPress_REST_V5_Post_Controller();
+        $postV5Controller->register_routes();
         
-        $authorV4Controller = new SwiftyPress_REST_V4_Author_Controller();
-        $authorV4Controller->register_routes();
+        $authorV5Controller = new SwiftyPress_REST_V5_Author_Controller();
+        $authorV5Controller->register_routes();
         
-        $mediaV4Controller = new SwiftyPress_REST_V4_Media_Controller();
-        $mediaV4Controller->register_routes();
+        $mediaV5Controller = new SwiftyPress_REST_V5_Media_Controller();
+        $mediaV5Controller->register_routes();
     }
     
     public function comment_post($comment_ID, $comment_approved, $commentdata) {

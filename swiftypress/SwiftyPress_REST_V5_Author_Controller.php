@@ -1,6 +1,6 @@
 <?php
 
-class SwiftyPress_REST_V4_Author_Controller extends SwiftyPress_REST_V4 {
+class SwiftyPress_REST_V5_Author_Controller extends SwiftyPress_REST_V5 {
  
     // Here initialize our namespace and resource name.
     public function __construct() {
@@ -13,20 +13,14 @@ class SwiftyPress_REST_V4_Author_Controller extends SwiftyPress_REST_V4 {
         register_rest_route($this->namespace, '/' . $this->resource_name . '/(?P<id>[\d]+)', array(
             array(
                 'methods' => 'GET',
-                'callback' => array($this, 'get_author')
-            ),
-            'schema' => array($this, 'get_author_schema')
+                'callback' => array($this, 'get_item')
+            )
         ));
     }
  
-    /**
-     * Get the author and outputs it as a rest response.
-     *
-     * @param WP_REST_Request $request Current request.
-     */
-    public function get_author($request) {
+    public function get_item($request) {
         $id = (int)$request['id'];
-        $author = $this->prepare_author_for_response($id);
+        $author = $this->prepare_author_for_render($id);
  
         if (empty($author)) {
             return new WP_Error(
@@ -36,9 +30,7 @@ class SwiftyPress_REST_V4_Author_Controller extends SwiftyPress_REST_V4 {
             );
         }
         
-        $data = array(
-            'author' => $this->prepare_response_for_render($author)
-        );
+        $data = array('author' => $author);
         
         // Return all response data.
         return rest_ensure_response($data);
