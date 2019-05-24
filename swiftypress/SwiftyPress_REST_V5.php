@@ -143,13 +143,21 @@ class SwiftyPress_REST_V5 {
             return array();
         }
 
+        $default_taxonomies = array('category', 'post_tag');
         $taxonomies = !empty($request['taxonomies'])
             ? explode(',', $request['taxonomies'])
-            : array('category', 'post_tag');
+            : $default_taxonomies;
+
+        $terms = get_the_terms($post_ids, $taxonomies);
+
+        // Fallback to default if taxonomy doesn't exist
+        if (is_wp_error($terms)) {
+            $terms = get_the_terms($post_ids, $default_taxonomies);
+        }
 
         $terms_data = array_map(
             array($this, 'prepare_term_for_render'), 
-            get_the_terms($post_ids, $taxonomies)
+            $terms
         );
 
         if (empty($terms_data)) {
