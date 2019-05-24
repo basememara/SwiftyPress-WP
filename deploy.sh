@@ -20,7 +20,7 @@ read PLUGINSLUG
 
 # main config, set off of plugin slug
 CURRENTDIR=`pwd`
-CURRENTDIR="$CURRENTDIR/$PLUGINSLUG"
+#CURRENTDIR="$CURRENTDIR/$PLUGINSLUG"
 MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in the wordpress plugin
 
 # git config
