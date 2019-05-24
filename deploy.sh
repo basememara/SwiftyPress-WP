@@ -11,12 +11,9 @@
 
 # EDIT THIS LINE
 SVNUSER="zamzaminc" # Your WordPress.org SVN Username
+PLUGINSLUG="swiftypress"
 
 # No editing required below this line.
-
-#prompt for plugin slug
-echo -e "Plugin Slug: \c"
-read PLUGINSLUG
 
 # main config, set off of plugin slug
 CURRENTDIR=`pwd`

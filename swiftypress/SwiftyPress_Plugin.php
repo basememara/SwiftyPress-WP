@@ -137,9 +137,10 @@ class SwiftyPress_Plugin extends SwiftyPress_LifeCycle {
         global $post;
 
         $url = $_SERVER['HTTP_HOST'] . rtrim($_SERVER['REQUEST_URI'], '/');
+        $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
 
         // Smart App Banner for Safari and iOS
-        echo '<meta name="apple-itunes-app" content="app-id=' . $this->getOption('iOSID') . ', app-argument=' . 'http://' . $url . '">';
+        echo '<meta name="apple-itunes-app" content="app-id=' . $this->getOption('iOSID') . ', app-argument=' . $protocol . '://' . $url . '">';
 
         // Google App Indexing
         echo '<link rel="alternate" href="android-app://' . $this->getOption('AndroidID') . '/' . 'http/' . $url . '" />';
