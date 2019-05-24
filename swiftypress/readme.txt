@@ -4,7 +4,7 @@ Tags: mobile, mobile app, native app, ios, ios app, iphone app, apple, apple wat
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 4.7
-Tested up to: 5.2.0
+Tested up to: 5.2.1
 Stable tag: 1.5.1
 
 Mobile app framework for your WordPress blog.
