@@ -20,7 +20,7 @@ read PLUGINSLUG
 
 # main config, set off of plugin slug
 CURRENTDIR=`pwd`
-#CURRENTDIR="$CURRENTDIR/$PLUGINSLUG"
+CURRENTDIR="$CURRENTDIR/$PLUGINSLUG"
 MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in the wordpress plugin
 
 # git config
@@ -64,6 +64,9 @@ echo
 echo "Creating local copy of SVN repo ..."
 svn co $SVNURL $SVNPATH
 
+echo "Clearing svn repo so can be overwritten"
+svn rm $SVNPATH/trunk/*
+
 echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
 README.md
@@ -74,14 +77,9 @@ README.md
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
-#if submodule exist, recursively check out their indexes
-if [ -f ".gitmodules" ]
-then
-echo "Exporting the HEAD of each submodule from git to the trunk of SVN"
-git submodule init
-git submodule update
-git submodule foreach --recursive 'git checkout-index -a -f --prefix=$SVNPATH/trunk/$path/'
-fi
+echo "Move plugin folder to root of trunk"
+cp -R $SVNPATH/trunk/$PLUGINSLUG/* $SVNPATH/trunk/
+rm -rf $SVNPATH/trunk/$PLUGINSLUG
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
@@ -96,6 +94,6 @@ cd $SVNPATH/tags/$NEWVERSION1
 svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
-rm -fr $SVNPATH/
+#rm -fr $SVNPATH/
 
 echo "*** FIN ***"
