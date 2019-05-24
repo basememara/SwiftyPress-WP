@@ -64,9 +64,6 @@ echo
 echo "Creating local copy of SVN repo ..."
 svn co $SVNURL $SVNPATH
 
-echo "Clearing svn repo so can be overwritten"
-svn rm $SVNPATH/trunk/*
-
 echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
 README.md
