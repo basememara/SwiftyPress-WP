@@ -282,6 +282,31 @@
             .comment-form {
                 display: none;
             }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #000;
+                    color: #fff;
+                }
+                
+                h1, h2, h3, h4, h5, h6 {
+                    color: #aaa;
+                }
+                
+                .site-container {
+                    background-color: #000;
+                }
+                
+                .content {
+                    background-color: #000;
+                }
+
+                .comment-author,
+                .comment-metadata a,
+                .pingback .edit-link a {
+                    color: rgba(142, 142, 147, 1);
+                }
+            }
         </style>
     </head>
     <body>
